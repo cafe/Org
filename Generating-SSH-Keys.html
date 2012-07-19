@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Generating SSH Keys</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Generating SSH Keys"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-06-25T16:25+0800"/>
+<meta name="author" content="HDC"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Generating SSH Keys</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Step1: Check for SSH Keys</a></li>
+<li><a href="#sec-2">2 Step 2: Backup and remove existing SSH Keys</a></li>
+<li><a href="#sec-3">3 Step 3: Generate a new SSH key</a></li>
+<li><a href="#sec-4">4 Step 4: Add your SSH key to GitHub</a></li>
+<li><a href="#sec-5">5 Step 5: put the id_rsa.pub to the correct directory</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Step1: Check for SSH Keys</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>Checks to see if there is a directory named ".ssh" in your user directory
+</p>
+
+
+<pre class="src src-bash">$ cd ~/.ssh
+</pre>
+
+<p>
+If it says "No such file or directory" skip to <b>step 3</b>. Otherwise continue to <b>step 2</b>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Step 2: Backup and remove existing SSH Keys</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>Since there is already an SSH directory you'll want to back the old one up and remove it:
+</p>
+
+
+<pre class="src src-bash">$ ls
+# Lists all the subdirectories in the current directory
+config id_rsa id_rsa.pub known_hosts
+
+$ mkdir key_backup
+# Makes a subdirectory called <span style="color: #8b2252;">"key_backup"</span> in the current directory
+
+$ cp id_rsa* key_backup
+# Copies the id_rsa keypair into key_backup
+
+$ rm id_rsa*
+# Deletes the id_rsa keypair
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Step 3: Generate a new SSH key</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>To generate a new SSH key, enter the code below. We want the default settings so when asked to enter a file in which to save the key, just press enter.
+</p>
+
+
+<pre class="src src-bash">$ ssh-keygen # or ssh-keygen -t rsa -C <span style="color: #8b2252;">"your_email@youremail.com"</span>
+# Creates a new ssh key using the provided email
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/you/.ssh/id_rsa):
+</pre>
+
+<p>
+Now you needd to enter a passphrase.
+</p>
+
+
+<pre class="example">Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Step 4: Add your SSH key to GitHub</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>Run the following code to copy the key to your clipboard.
+</p>
+
+
+<pre class="src src-bash">$ sudo apt-get install xclip
+# Downloads and installs xclip
+
+$ xclip -sel clip &lt; ~/.ssh/id_rsa.pub
+# Copies the contents of the id_rsa.pub file to your clipboard
+</pre>
+
+
+<p>
+&hellip;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Step 5: put the id_rsa.pub to the correct directory</h2>
+<div class="outline-text-2" id="text-5">
+
+<p>Check <i>etc/ssh/sshd_config,  you will find a configuration line like "#AuthorizedKeysFile  %h</i>.ssh/authorized_keys", which tells us where the id_rsa.pub puts.
+</p>
+
+
+<pre class="src src-bash">$ mv id_rsa.pub authorized_keys
+</pre>
+
+<p>
+Note that, <b>DO NOT</b> use cp command instead of mv command. If you do this, it won't work when you
+</p></div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-06-25T16:25+0800</p>
+<p class="author">Author: HDC</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.8.11 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 23</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

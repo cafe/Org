@@ -1,0 +1,105 @@
+% Created 2012-06-25 一 17:41
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Generating SSH Keys}
+\author{HDC}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.8.11}}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\vspace*{1cm}
+
+\section{Step1: Check for SSH Keys}
+\label{sec-1}
+
+Checks to see if there is a directory named ``.ssh'' in your user directory
+
+\begin{verbatim}
+$ cd ~/.ssh
+\end{verbatim}
+If it says ``No such file or directory'' skip to \textbf{step 3}. Otherwise continue to \textbf{step 2}.
+\section{Step 2: Backup and remove existing SSH Keys}
+\label{sec-2}
+
+Since there is already an SSH directory you'll want to back the old one up and remove it:
+
+\begin{verbatim}
+$ ls
+# Lists all the subdirectories in the current directory
+config id_rsa id_rsa.pub known_hosts
+
+$ mkdir key_backup
+# Makes a subdirectory called "key_backup" in the current directory
+
+$ cp id_rsa* key_backup
+# Copies the id_rsa keypair into key_backup
+
+$ rm id_rsa*
+# Deletes the id_rsa keypair
+\end{verbatim}
+\section{Step 3: Generate a new SSH key}
+\label{sec-3}
+
+To generate a new SSH key, enter the code below. We want the default settings so when asked to enter a file in which to save the key, just press enter.
+
+\begin{verbatim}
+$ ssh-keygen # or ssh-keygen -t rsa -C "your_email@youremail.com"
+# Creates a new ssh key using the provided email
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/you/.ssh/id_rsa):
+\end{verbatim}
+Now you needd to enter a passphrase.
+
+\begin{verbatim}
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+\end{verbatim}
+\section{Step 4: Add your SSH key to GitHub}
+\label{sec-4}
+
+Run the following code to copy the key to your clipboard.
+
+\begin{verbatim}
+$ sudo apt-get install xclip
+# Downloads and installs xclip
+
+$ xclip -sel clip < ~/.ssh/id_rsa.pub
+# Copies the contents of the id_rsa.pub file to your clipboard
+\end{verbatim}
+
+\ldots{}
+\section{Step 5: put the id\_rsa.pub to the correct directory}
+\label{sec-5}
+
+Check \emph{etc/ssh/sshd\_config,  you will find a configuration line like ``\#AuthorizedKeysFile  \%h}.ssh/authorized\_keys'', which tells us where the id\_rsa.pub puts.
+
+\begin{verbatim}
+$ mv id_rsa.pub authorized_keys
+\end{verbatim}
+Note that, \textbf{DO NOT} use cp command instead of mv command. If you do this, it won't work when you
+
+\end{document}

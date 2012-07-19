@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>如何正确的安装 Ruby, Rails运行环境</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="如何正确的安装 Ruby, Rails运行环境"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-07-08T17:24+0800"/>
+<meta name="author" content="hdc"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">如何正确的安装 Ruby, Rails运行环境</h1>
+
+<p>对于新入门的开发者，如何安装 Ruby，Ruby Gems 和 Railes 的运行环境可能会是个问题，本页主要介绍如何用一条靠谱的路子快速安装 Ruby 开发环境。
+此安装方法同样适用于产品环境！
+</p>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 <b>系统要求</b></a>
+<ul>
+<li><a href="#sec-1-1">1.1 步骤0 － 安装系统需要的包</a></li>
+<li><a href="#sec-1-2">1.2 步骤1－安装 RVM</a></li>
+<li><a href="#sec-1-3">1.3 步骤2－用 RVM 安装 Ruby 环境</a></li>
+<li><a href="#sec-1-4">1.4 步骤3－设置 Ruby 版本</a></li>
+<li><a href="#sec-1-5">1.5 步骤4－安装 Rails 环境</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> <b>系统要求</b></h2>
+<div class="outline-text-2" id="text-1">
+
+<p>首先确定操作系统环境，不建议在windows上面搞，所以你需要用：
+</p><ul>
+<li>Mac OS X
+</li>
+<li>任意 Linux 发行版本(Ubuntu,CentOS,Redhat,ArchLinux&hellip;)
+</li>
+</ul>
+
+<p><b>以下代码区域，带有 $ 打头的表示需要在控制台（终端）下面执行（不包括 $ 符号）</b>
+</p>
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 步骤0 － 安装系统需要的包</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<p><b>Mac 请安装 Xcode 开发工具，安将帮你安装好 Unix 环境需要的开发包</b>
+<b>Ubuntu 安装，开发包</b>
+</p>
+
+
+<pre class="src src-bash">$ sudo apt-get install wget vim build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf automake libtool imagemagick libpcre3-dev
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 步骤1－安装 RVM</h3>
+<div class="outline-text-3" id="text-1-2">
+
+<p>RVM 是干什么的这里就不解释了，后面你将会慢慢搞明白。
+</p>
+
+
+<pre class="src src-bash">$ curl -L get.rvm.io | bash -s stable
+</pre>
+
+<p>
+等待一段时间后就可以成功安装好 RVM。
+</p>
+
+
+<pre class="src src-bash">$ source ~/.bash_profile
+</pre>
+
+<p>
+测试是否安装正确
+</p>
+
+
+<pre class="src src-bash">$ rvm -v
+rvm 1.14.3 (stable) by Wayne E. Seguin &lt;<a href="mailto:wayneeseguin&#64;gmail.com">wayneeseguin&#64;gmail.com</a>&gt;, Michal Papis &lt;<a href="mailto:mpapis&#64;gmail.com">mpapis&#64;gmail.com</a>&gt; [https://rvm.io/]
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 步骤2－用 RVM 安装 Ruby 环境</h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+
+
+<pre class="src src-bash">$ rvm pkg install readline
+$ rvm install 1.9.2 --with-readline-dir=$rvm_path/usr
+</pre>
+
+<p>
+或者可以安装1.8.7版本，也可以是1.9.3，只要将后面的版本号更换一下就可以了
+同样继续等待漫长的下载，编译过程，完成以后，Ruby，Ruby Gems 就安装好了。
+</p></div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 步骤3－设置 Ruby 版本</h3>
+<div class="outline-text-3" id="text-1-4">
+
+<p>RVM 装好以后，需要执行下面的命令将指定版本的 Ruby 设置为系统默认版本
+</p>
+
+
+<pre class="src src-bash">$ rvm 1.9.3 --default
+</pre>
+
+<p>
+同样，也可以用其他版本号，前提是你有用 rvm install 安装过那个版本
+这个时候你可以测试是否正确
+</p>
+
+
+<pre class="src src-bash">$ ruby -v
+ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-linux]
+
+$ gem -v
+1.8.24
+
+$ gem source -r http://rubygems.org/
+$ gem source -a http://ruby.taobao.org
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> 步骤4－安装 Rails 环境</h3>
+<div class="outline-text-3" id="text-1-5">
+
+<p>上面３步过后，Ruby环境就安装好了，接下来安装 Rails
+</p>
+
+
+<pre class="src src-bash">$ gem install bundler rails
+</pre>
+
+<p>
+然后测试安装是否正确
+</p>
+
+
+<pre class="src src-bash">$ bundle -v
+Bundler version 1.1.4
+
+$ rails
+</pre>
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-07-08T17:24+0800</p>
+<p class="author">Author: hdc</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.8.11 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

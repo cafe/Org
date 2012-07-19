@@ -1,0 +1,124 @@
+% Created 2012-07-08 日 17:25
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{如何正确的安装 Ruby, Rails运行环境}
+\author{hdc}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.8.11}}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\vspace*{1cm}
+对于新入门的开发者，如何安装 Ruby，Ruby Gems 和 Railes 的运行环境可能会是个问题，本页主要介绍如何用一条靠谱的路子快速安装 Ruby 开发环境。
+此安装方法同样适用于产品环境！
+
+
+\section{\textbf{系统要求}}
+\label{sec-1}
+
+首先确定操作系统环境，不建议在windows上面搞，所以你需要用：
+\begin{itemize}
+\item Mac OS X
+\item 任意 Linux 发行版本(Ubuntu,CentOS,Redhat,ArchLinux\ldots{})
+\end{itemize}
+\textbf{以下代码区域，带有 \$ 打头的表示需要在控制台（终端）下面执行（不包括 \$ 符号）}
+\subsection{步骤0 － 安装系统需要的包}
+\label{sec-1-1}
+
+\textbf{Mac 请安装 Xcode 开发工具，安将帮你安装好 Unix 环境需要的开发包}
+\textbf{Ubuntu 安装，开发包}
+
+\begin{verbatim}
+$ sudo apt-get install wget vim build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf automake libtool imagemagick libpcre3-dev
+\end{verbatim}
+\subsection{步骤1－安装 RVM}
+\label{sec-1-2}
+
+RVM 是干什么的这里就不解释了，后面你将会慢慢搞明白。
+
+\begin{verbatim}
+$ curl -L get.rvm.io | bash -s stable
+\end{verbatim}
+等待一段时间后就可以成功安装好 RVM。
+
+\begin{verbatim}
+$ source ~/.bash_profile
+\end{verbatim}
+测试是否安装正确
+
+\begin{verbatim}
+$ rvm -v
+rvm 1.14.3 (stable) by Wayne E. Seguin <wayneeseguin@gmail.com>, Michal Papis <mpapis@gmail.com> [https://rvm.io/]
+\end{verbatim}
+\subsection{步骤2－用 RVM 安装 Ruby 环境}
+\label{sec-1-3}
+
+
+\begin{verbatim}
+$ rvm pkg install readline
+$ rvm install 1.9.2 --with-readline-dir=$rvm_path/usr
+\end{verbatim}
+或者可以安装1.8.7版本，也可以是1.9.3，只要将后面的版本号更换一下就可以了
+同样继续等待漫长的下载，编译过程，完成以后，Ruby，Ruby Gems 就安装好了。
+\subsection{步骤3－设置 Ruby 版本}
+\label{sec-1-4}
+
+RVM 装好以后，需要执行下面的命令将指定版本的 Ruby 设置为系统默认版本
+
+\begin{verbatim}
+$ rvm 1.9.3 --default
+\end{verbatim}
+同样，也可以用其他版本号，前提是你有用 rvm install 安装过那个版本
+这个时候你可以测试是否正确
+
+\begin{verbatim}
+$ ruby -v
+ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-linux]
+
+$ gem -v
+1.8.24
+
+$ gem source -r http://rubygems.org/
+$ gem source -a http://ruby.taobao.org
+\end{verbatim}
+\subsection{步骤4－安装 Rails 环境}
+\label{sec-1-5}
+
+上面３步过后，Ruby环境就安装好了，接下来安装 Rails
+
+\begin{verbatim}
+$ gem install bundler rails
+\end{verbatim}
+然后测试安装是否正确
+
+\begin{verbatim}
+$ bundle -v
+Bundler version 1.1.4
+
+$ rails
+\end{verbatim}
+
+\end{document}

@@ -1,0 +1,52 @@
+#+STARTUP: overview
+#+TAGS: { 桌面(d) 服务器(s) }  编辑器(e) 浏览器(f) 多媒体(m) 压缩(z)
+#+TAGS: { @Windows(w) @Linux(l) }
+#+TAGS: { 糟糕(1) 凑合(2) 不错(3) 很好(4) 极品(5) }
+#+SEQ_TODO: TODO(T) WAIT(W) | DONE(D!) CANCELED(C@)
+#+COLUMNS: %10ITEM %10PRIORITY %15TODO %65TAGS
+
+* *一行一行解释*
+- 启动时概览
+- 设定标签，括弧中的为标签快捷键(如果没有指定，默认为首字母）。可以设置在多行中
+- 花括号为标签组，组中的标签只能先一个
+- 设定待办状态。将项设置为｜后面的状态时（DONE CANCELED)，会打上 COLOSED 标志
+- 设定列视图
+  
+#+BEGIN_EXAMPLE
+#+COLUMNS: %10ITEM %10PRIORITY %15TODO %65TAGS
+#+END_EXAMPLE
+- 百分数表示该列所占宽度
+- 优先级
+- 事件状态
+- 标签
+
+* 工作
+
+** Emacs														  :桌面:编辑器:极品:
+神之编辑器
+*** org-mode
+组织你的意念
+
+** Vim
+编辑器之神
+
+** EmEditor
+
+* 娱乐
+DEADLINE: <2012-06-28 四>
+
+** Mplayer
+SCHEDULED: <2012-06-28 四>
+全能播放器
+<2012-06-28 四>
+* 网络
+
+** firefox
+
+** IE
+
+** PureFTPD
+
+* 其它
+
+** WinRAR

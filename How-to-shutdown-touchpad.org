@@ -1,0 +1,27 @@
+#+TITLE: 如何关闭
+#+TODO: TODO INPROGRESS | DONE
+#+TAGS: @office(o)@home(h) @traffic(t)
+#+TAGS: computer(c) nocomputer(n) either(e)
+#+TAGS: immediately(i) wait(w) action(a)
+
+* Idea List:
+* Task List:
+* Project List:
+* Someday/Mabe List:
+* Reminder:
+
+** TODO test[1/1]
+- [X] Only a test
+- []  It's another test
+- []  Third test
+
+
+原文地址：[[http://forum.ubuntu.org.cn/viewtopic.php?p=391456]]
+写在前面：
+这种方法不是很好，我是10.04，大部分情况下都是无法关闭触摸板，偶尔可以关闭，我的笔记本比较旧了，关闭触摸板的铵键失灵了
+有一种更简单的方法，我这里测试可以使用，原文地址：[[http://blog.3gcomet.com/article.asp?id=343]]
+关闭笔记本触摸板：
+sudo rmmod psmouse
+要恢复也简单：
+sudo modprobe psmouse
+下面是另外一种方法，使用synclient，大家可以试方式。

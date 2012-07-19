@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Ruby: Sort an array of objects by an attribute</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Ruby: Sort an array of objects by an attribute"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-06-28T09:54+0800"/>
+<meta name="author" content="HDC"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Ruby: Sort an array of objects by an attribute</h1>
+
+<p>In this example I'll show you how easy it is to sort an array of 9this same kind of) objects by an attribute. Let's say you have an array of User objects that have the attributes 'name' and 'login_count'. First, find all users
+</p>
+
+
+<pre class="src src-ruby"><span style="color: #eedd82;">@users</span> = <span style="color: #98fb98;">User</span>.find(<span style="color: #7fffd4;">:all</span>)
+</pre>
+
+<p>
+Now, we have to sort this array by 'name'. Since we don't know if any user used capitals in his name or not, we use 'downcase' to sort without case sensitivity.
+</p>
+<p>
+A small not. 'sort' returns a new array and leaves the original unchanged. You may want to just recorder the @user array. so use the 'sort!' method. The '!' indicates it's a destructive method. It will overwite the current @users arrray with the new sorting.
+</p>
+
+
+<pre class="src src-ruby"><span style="color: #eedd82;">@users</span>.sort! { |a,b| a.name.downcase &lt;=&gt; b.name.downcase }
+</pre>
+
+<p>
+That's all! Since strings are comparable, this will sort you user objects alphabetically by name. Want to sort on longin_count instead?
+</p>
+
+
+<pre class="src src-ruby"><span style="color: #eedd82;">@users</span>.sort! { |a,b| a.login_count &lt;=&gt; b.login_count }
+</pre>
+
+<p>
+So, now you can easily sort any object in an array just like you want it too!
+</p></div>
+
+<div id="postamble">
+<p class="date">Date: 2012-06-28T09:54+0800</p>
+<p class="author">Author: HDC</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.8.11 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 23</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

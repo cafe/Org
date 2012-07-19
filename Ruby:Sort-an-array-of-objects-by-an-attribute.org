@@ -1,0 +1,18 @@
+#+TITLE: Ruby: Sort an array of objects by an attribute
+#+AUTHOR: HDC
+
+In this example I'll show you how easy it is to sort an array of 9this same kind of) objects by an attribute. Let's say you have an array of User objects that have the attributes 'name' and 'login\_count'. First, find all users
+#+BEGIN_SRC ruby
+@users = User.find(:all)
+#+END_SRC
+Now, we have to sort this array by 'name'. Since we don't know if any user used capitals in his name or not, we use 'downcase' to sort without case sensitivity.
+
+A small not. 'sort' returns a new array and leaves the original unchanged. You may want to just recorder the @user array. so use the 'sort!' method. The '!' indicates it's a destructive method. It will overwite the current @users arrray with the new sorting.
+#+BEGIN_SRC ruby
+@users.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+#+END_SRC
+That's all! Since strings are comparable, this will sort you user objects alphabetically by name. Want to sort on longin\_count instead?
+#+BEGIN_SRC ruby
+@users.sort! { |a,b| a.login_count <=> b.login_count }
+#+END_SRC
+So, now you can easily sort any object in an array just like you want it too!

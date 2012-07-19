@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>GIT分支管理是一门艺术</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="GIT分支管理是一门艺术"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-07-19T17:00+0800"/>
+<meta name="author" content="HDC"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">GIT分支管理是一门艺术</h1>
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 GIT，在技术层面上，绝对是一个无中心的分布式版本控制系统，但在管理层面上，我建议你保持一个中心版本库。</a></li>
+<li><a href="#sec-2">2 我建议，一个中心版本库（我们叫它origin）至少包括两个分支，即“主分支”（master）和“开发分支”（develop）</a></li>
+<li><a href="#sec-3">3 要确保：团队成员从主分支（master）获得的都是处于发布状态的代码，而从开发分支（develop）应该总能够获得最新开发进展的代码</a></li>
+<li><a href="#sec-4">4 在一个团队开发协作中，我建议，要有“辅助分支”的概念。</a></li>
+<li><a href="#sec-5">5 “辅助分支”，大体包括如下几类：“管理功能开发”的分支、“帮助构建可发布代码”的分支、“可以便捷的修复发布版本关键BUG”的分支，等等</a></li>
+<li><a href="#sec-6">6 “辅助分支”的最大特点就是“生命周期十分有限”，完成使命后即可被清除。</a></li>
+<li><a href="#sec-7">7 我建议至少还应设置三类“辅助分支”，我们称之为“Feature branches”，“Release branches”，“Hotfix branches”。</a></li>
+<li><a href="#sec-8">8 至此，我们形成了如下这张最重要的组织组，包含了两个粗体字分支（master/develop）和三个细体字分支（feature/release/hotfixes）。</a></li>
+<li><a href="#sec-9">9 “Feature branches”，起源于develop分支，最终也会归于develop分支。</a></li>
+<li><a href="#sec-10">10 “Feature branches”常用于开发一个独立的新功能，且其最终的结局必须只有两个，其一是合并入“develop”分支，其二是被抛弃。最典型的“Feature branches”一定是存在于团队开发者那里，而不应该是“中心版本库”中。</a></li>
+<li><a href="#sec-11">11 “Feature branches”起源于“develop”分支，实现方法是：</a></li>
+<li><a href="#sec-12">12 “Feature branches”最终也归于“develop”分支，实现方式是：</a></li>
+<li><a href="#sec-13">13 “Release branch”，起源于 develo 分支，最终归于 “develop” 或 “master” 分支。这类分支建议命名为 “release-*”</a></li>
+<li><a href="#sec-14">14 “Release branch” 通常负责 “短期的发布前准备工作”、“小bug的修复工作”、“版本号等元信息的准备工作”。与此同时，“develop”分支又可以承接一下个新功能的的开发工作了。</a></li>
+<li><a href="#sec-15">15 “Release branch” 产生新提交的最好时候是 “develop” 分支已经基本到达预期的状态，至少希望新功能已经完全从 “Feature branches” 合并到 “develop” 分支了。</a></li>
+<li><a href="#sec-16">16 创建 “Relase branches”，方法是：</a></li>
+<li><a href="#sec-17">17 在一段短时间内，在 “Release branches” 上，我们可以继续修复bug。在此阶段，严禁新功能的并入，新功能应该是被合并到 “develop” 分支的。</a></li>
+<li><a href="#sec-18">18 经过若干 bug 修复后，“Release branches”上的代码已经达到可发布状态，此时，需要完成三个动作：第一是将 “Release branches” 合并到 “master” 分支，第二是一定要为 master 上的这个新提交打 TAG （记录里程碑），第三是要将 “Release branches” 合并回 “develop” 分支。</a></li>
+<li><a href="#sec-19">19 “Hotfix branches” 源于 “master”，归于 “develop” 或 “master”，通常命令为 “hotfox-”</a></li>
+<li><a href="#sec-20">20 “Hotfix branches” 类似于 “Release branch”，但产生此分支总是非预期的关键GUG。</a></li>
+<li><a href="#sec-21">21 建议设立 “Hotfix branches” 的原因是：希望避免 “develop分支” 新功能的开发必须为BUG修复让路的情况。</a></li>
+<li><a href="#sec-22">22 建立 “Hotfix branches”，方法是：</a></li>
+<li><a href="#sec-23">23 BUG修复后，需要将 “Hotfix branches” 合并回 “master” 分支，同时也需要合并回 “develop” 分支，方法是：</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> GIT，在技术层面上，绝对是一个无中心的分布式版本控制系统，但在管理层面上，我建议你保持一个中心版本库。</h2>
+<div class="outline-text-2" id="text-1">
+
+<p><img src="images/105017.png"  alt="images/105017.png" />
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 我建议，一个中心版本库（我们叫它origin）至少包括两个分支，即“主分支”（master）和“开发分支”（develop）</h2>
+<div class="outline-text-2" id="text-2">
+
+<p><img src="images/105026.png"  alt="images/105026.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 要确保：团队成员从主分支（master）获得的都是处于发布状态的代码，而从开发分支（develop）应该总能够获得最新开发进展的代码</h2>
+<div class="outline-text-2" id="text-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 在一个团队开发协作中，我建议，要有“辅助分支”的概念。</h2>
+<div class="outline-text-2" id="text-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> “辅助分支”，大体包括如下几类：“管理功能开发”的分支、“帮助构建可发布代码”的分支、“可以便捷的修复发布版本关键BUG”的分支，等等</h2>
+<div class="outline-text-2" id="text-5">
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> “辅助分支”的最大特点就是“生命周期十分有限”，完成使命后即可被清除。</h2>
+<div class="outline-text-2" id="text-6">
+
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> 我建议至少还应设置三类“辅助分支”，我们称之为“Feature branches”，“Release branches”，“Hotfix branches”。</h2>
+<div class="outline-text-2" id="text-7">
+
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> 至此，我们形成了如下这张最重要的组织组，包含了两个粗体字分支（master/develop）和三个细体字分支（feature/release/hotfixes）。</h2>
+<div class="outline-text-2" id="text-8">
+
+<p><img src="images/105037.png"  alt="images/105037.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> “Feature branches”，起源于develop分支，最终也会归于develop分支。</h2>
+<div class="outline-text-2" id="text-9">
+
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> “Feature branches”常用于开发一个独立的新功能，且其最终的结局必须只有两个，其一是合并入“develop”分支，其二是被抛弃。最典型的“Feature branches”一定是存在于团队开发者那里，而不应该是“中心版本库”中。</h2>
+<div class="outline-text-2" id="text-10">
+
+</div>
+
+</div>
+
+<div id="outline-container-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> “Feature branches”起源于“develop”分支，实现方法是：</h2>
+<div class="outline-text-2" id="text-11">
+
+
+
+
+<pre class="src src-bash">$ git checkout -b myfeature develop
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> “Feature branches”最终也归于“develop”分支，实现方式是：</h2>
+<div class="outline-text-2" id="text-12">
+
+
+
+
+<pre class="src src-bash">$ git checkout develop
+$ git merge --no-ff myfeature
+&#65288;--no-ff&#65292;&#21363;not fast forward&#65292;&#20854;&#20316;&#29992;&#26159;&#65306;&#35201;&#27714;git merge&#21363;&#20351;&#22312;fast forward&#26465;&#20214;&#19979;&#20063;&#35201;&#20135;&#29983;&#19968;&#20010;&#26032;&#30340; merge commit&#65289;
+&#65288;&#27492;&#22788;&#65292;&#35201;&#27714;&#37319;&#29992; --no-ff &#30340;&#26041;&#24335;&#36827;&#34892;&#20998;&#25903;&#21512;&#24182;&#65292;&#20854;&#30446;&#30340;&#22312;&#20110;&#65292;&#24076;&#26395;&#20445;&#25345;&#21407;&#26377;&#8220;Feature branches&#8221;&#25972;&#20010;&#25552;&#20132;&#38142;&#30340;&#23436;&#25972;&#24615;&#65289;
+$ git branch -d myfeature
+$ git push origin develop
+</pre>
+
+<p>
+<img src="images/105048.png"  alt="images/105048.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> “Release branch”，起源于 develo 分支，最终归于 “develop” 或 “master” 分支。这类分支建议命名为 “release-*”</h2>
+<div class="outline-text-2" id="text-13">
+
+</div>
+
+</div>
+
+<div id="outline-container-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> “Release branch” 通常负责 “短期的发布前准备工作”、“小bug的修复工作”、“版本号等元信息的准备工作”。与此同时，“develop”分支又可以承接一下个新功能的的开发工作了。</h2>
+<div class="outline-text-2" id="text-14">
+
+</div>
+
+</div>
+
+<div id="outline-container-15" class="outline-2">
+<h2 id="sec-15"><span class="section-number-2">15</span> “Release branch” 产生新提交的最好时候是 “develop” 分支已经基本到达预期的状态，至少希望新功能已经完全从 “Feature branches” 合并到 “develop” 分支了。</h2>
+<div class="outline-text-2" id="text-15">
+
+</div>
+
+</div>
+
+<div id="outline-container-16" class="outline-2">
+<h2 id="sec-16"><span class="section-number-2">16</span> 创建 “Relase branches”，方法是：</h2>
+<div class="outline-text-2" id="text-16">
+
+
+
+
+<pre class="src src-bash">$ git checkout -b release-1.2 develop
+$ ./bump-version.sh 1.2 &#65288;&#36825;&#20010;&#33050;&#26412;&#29992;&#20110;&#23558;&#20195;&#30721;&#25152;&#26377;&#28041;&#21450;&#29256;&#26412;&#20449;&#24687;&#30340;&#22320;&#26041;&#37117;&#32479;&#19968;&#20462;&#25913;&#21040; 1.2&#65292;&#21478;&#22806;&#65292;&#38656;&#35201;&#29992;&#25143;&#26681;&#25454;&#33258;&#24049;&#30340;&#39033;&#30446;&#21435;&#32534;&#20889;&#36866;&#21512;&#30340; bump-version.sh&#65289;
+$ git commit -a -m <span style="color: #ffa500; font-style: italic;">"Bumped version number to 1.2"</span>
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-17" class="outline-2">
+<h2 id="sec-17"><span class="section-number-2">17</span> 在一段短时间内，在 “Release branches” 上，我们可以继续修复bug。在此阶段，严禁新功能的并入，新功能应该是被合并到 “develop” 分支的。</h2>
+<div class="outline-text-2" id="text-17">
+
+</div>
+
+</div>
+
+<div id="outline-container-18" class="outline-2">
+<h2 id="sec-18"><span class="section-number-2">18</span> 经过若干 bug 修复后，“Release branches”上的代码已经达到可发布状态，此时，需要完成三个动作：第一是将 “Release branches” 合并到 “master” 分支，第二是一定要为 master 上的这个新提交打 TAG （记录里程碑），第三是要将 “Release branches” 合并回 “develop” 分支。</h2>
+<div class="outline-text-2" id="text-18">
+
+
+
+
+<pre class="src src-bash">$ git checkout master
+$ git merge --no-ff release-1.2
+$ git tag -a 1.2 &#65288;&#20351;&#29992; -u/-s/-a &#21442;&#25968;&#20250;&#21019;&#24314; tag &#23545;&#35937;&#65292;&#32780;&#38750;&#36719; tag&#65289;
+$ git checkout develop
+$ git merge --no-ff release-1.2
+$ git branch -d release-1.2
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-19" class="outline-2">
+<h2 id="sec-19"><span class="section-number-2">19</span> “Hotfix branches” 源于 “master”，归于 “develop” 或 “master”，通常命令为 “hotfox-”</h2>
+<div class="outline-text-2" id="text-19">
+
+</div>
+
+</div>
+
+<div id="outline-container-20" class="outline-2">
+<h2 id="sec-20"><span class="section-number-2">20</span> “Hotfix branches” 类似于 “Release branch”，但产生此分支总是非预期的关键GUG。</h2>
+<div class="outline-text-2" id="text-20">
+
+</div>
+
+</div>
+
+<div id="outline-container-21" class="outline-2">
+<h2 id="sec-21"><span class="section-number-2">21</span> 建议设立 “Hotfix branches” 的原因是：希望避免 “develop分支” 新功能的开发必须为BUG修复让路的情况。</h2>
+<div class="outline-text-2" id="text-21">
+
+<p><img src="images/105059.png"  alt="images/105059.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-22" class="outline-2">
+<h2 id="sec-22"><span class="section-number-2">22</span> 建立 “Hotfix branches”，方法是：</h2>
+<div class="outline-text-2" id="text-22">
+
+
+
+
+<pre class="src src-bash">$ git checkout -b hotfix-1.2.1 master
+$ ./bump-version.sh 1.2.1
+$ git commit -a -m <span style="color: #ffa500; font-style: italic;">"Bumpt version to 1.2.1"</span> &#65288;&#28982;&#21518;&#21487;&#20197;&#24320;&#22987;&#38382;&#39064;&#20462;&#22797;&#24037;&#20316;&#65289;
+$ git commit -m <span style="color: #ffa500; font-style: italic;">"Fixed severe production problem"</span> &#65288;&#22312;&#38382;&#39064;&#20462;&#22797;&#21518;&#65292;&#36827;&#34892;&#31532;&#20108;&#27425;&#25552;&#20132;&#65289;
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-23" class="outline-2">
+<h2 id="sec-23"><span class="section-number-2">23</span> BUG修复后，需要将 “Hotfix branches” 合并回 “master” 分支，同时也需要合并回 “develop” 分支，方法是：</h2>
+<div class="outline-text-2" id="text-23">
+
+
+
+
+<pre class="src src-bash">$ git checkout master
+$ git merge --no-ff hotfix-1.2.1
+$ git tag -a 1.2.1
+$ git checkout develop
+$ git merge --no-ff hotfix-1.2.1
+$ git branch -d hotfix-1.2.1
+</pre>
+
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-07-19T17:00+0800</p>
+<p class="author">Author: HDC</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.8.11 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>
