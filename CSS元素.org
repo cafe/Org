@@ -1,0 +1,94 @@
+#+TITLE: CSS 元素
+#+AUTHOR: HDC
+#+EMAIL: pbe_sedm@126.com
+
+* :before 伪元素
+*定义和用法*
+
+:before 伪元素在元素之前添加内容。
+这个伪元素允许创作人员在元素内容的最前面插入生成内容。默认地，这个伪元素是行内元素，不过可以使用属性 display 改变这一点。
+
+*实例*
+
+此样式会在每个 h1 元素之前播放一段声音：
+#+BEGIN_SRC html
+h1:before
+{
+  content:url(beep.wav);
+}
+#+END_SRC
+
+* <section> 标签
+*定义和用法*
+
+<section> 标签定义文档中的节（section、区段）。比如章节、页眉、页脚或文档中的其他部分。
+
+*实例*
+
+文档中的区段，解释了 PRC：
+#+BEGIN_SRC html
+<section>
+  <h1>PRC</h1>
+  <p>The People's Republic of China was born in 1949...</p>
+</section>
+#+END_SRC
+
+* <article> 标签
+*定义和用法*
+
+<article> 标签定义独立的内容。
+可能的 article 实例：
+- 论坛帖子
+- 报纸文章
+- 博客条目
+- 用户评论
+
+*实例*
+
+#+BEGIN_SRC html
+<article>
+  <a href="http://www.apple.com">Safari 5 released</a><br />
+  7 Jun 2010, Just after the announcement of the new iPhone 4 at WWDC,
+  Apple announced the release of Safari 5 for Windows and Mac......
+</article>
+#+END_SRC
+
+* <header> 标签
+*定义和用法*
+<header>标签定义文档的页眉（介绍信息）。
+*实例*
+对主页的介绍：
+#+BEGIN_SRC html
+<header>
+  <h1>Welcome to my homepage</h1>
+  <p>My name is Donald Duck</p>
+</header>
+
+<p>The rest of my home page...</p>
+#+END_SRC
+
+* <footer> 标签
+*定义和用法*
+<footer>标签定义 section 或 document 的页脚。
+在典型情况下，该元素会包含创作者的姓名、文档的创作日期以及/或者联系信息。
+
+*实例*
+
+文档的页脚：
+#+BEGIN_SRC html
+<footer>This document was written in 2010</footer>
+#+END_SRC
+
+* <aside> 标签
+*定义和用法*
+<aside> 标签定义 article 以外的内容。aside 的内容应该与 article 的内容相关。
+
+*实例*
+
+#+BEGIN_SRC html
+<p>Me and my family visited The Epcot center this summer.</p>
+<aside>
+  <h4>Epcot Center</h4>
+  The Epcot Center is a theme park in Disney World, Florida.
+</aside>
+#+END_SRC

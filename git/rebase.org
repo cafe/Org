@@ -1,0 +1,25 @@
+#+TITLE: git-rebase
+
+#+BEGIN_SRC bash
+$ git rebase develop
+#+END_SRC
+
+*这个时候，git做了什么呢？*
+
+- 先将 develop 分支的代码 checkout 出来，作为工作目录
+- 然后将 master 分支从 develop 分支创建起的所有改变的补丁，依次打上。如果补丁的过程没有问题，rebase 就搞定了
+- 如果补丁的时候出现了问题，就会提示你处理冲突。处理好了，可以运行  git rebase --continue 继续直到完成
+- 如果你不想处理，你还是有两个选择，一个是放弃 rebase 过程（运行 git rebase --abort），另一个是直接用 develop 分支来取代当前分支（git rebase --skip）
+
+
+* 合并 b
+git rebase b
+
+* 处理完冲突继续合并
+git rebase --continue
+
+* 跳过
+git rebase --skip
+
+* 取消合并
+git rebase --abort

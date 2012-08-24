@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="title" content="GIT分支管理是一门艺术"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-07-19T17:00+0800"/>
+<meta name="generated" content="2012-08-03 21:52:57 CST"/>
 <meta name="author" content="HDC"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -278,7 +278,7 @@ $ git push origin develop
 
 <pre class="src src-bash">$ git checkout -b release-1.2 develop
 $ ./bump-version.sh 1.2 &#65288;&#36825;&#20010;&#33050;&#26412;&#29992;&#20110;&#23558;&#20195;&#30721;&#25152;&#26377;&#28041;&#21450;&#29256;&#26412;&#20449;&#24687;&#30340;&#22320;&#26041;&#37117;&#32479;&#19968;&#20462;&#25913;&#21040; 1.2&#65292;&#21478;&#22806;&#65292;&#38656;&#35201;&#29992;&#25143;&#26681;&#25454;&#33258;&#24049;&#30340;&#39033;&#30446;&#21435;&#32534;&#20889;&#36866;&#21512;&#30340; bump-version.sh&#65289;
-$ git commit -a -m <span style="color: #ffa500; font-style: italic;">"Bumped version number to 1.2"</span>
+$ git commit -a -m <span style="color: #95e454;">"Bumped version number to 1.2"</span>
 </pre>
 
 </div>
@@ -346,8 +346,8 @@ $ git branch -d release-1.2
 
 <pre class="src src-bash">$ git checkout -b hotfix-1.2.1 master
 $ ./bump-version.sh 1.2.1
-$ git commit -a -m <span style="color: #ffa500; font-style: italic;">"Bumpt version to 1.2.1"</span> &#65288;&#28982;&#21518;&#21487;&#20197;&#24320;&#22987;&#38382;&#39064;&#20462;&#22797;&#24037;&#20316;&#65289;
-$ git commit -m <span style="color: #ffa500; font-style: italic;">"Fixed severe production problem"</span> &#65288;&#22312;&#38382;&#39064;&#20462;&#22797;&#21518;&#65292;&#36827;&#34892;&#31532;&#20108;&#27425;&#25552;&#20132;&#65289;
+$ git commit -a -m <span style="color: #95e454;">"Bumpt version to 1.2.1"</span> &#65288;&#28982;&#21518;&#21487;&#20197;&#24320;&#22987;&#38382;&#39064;&#20462;&#22797;&#24037;&#20316;&#65289;
+$ git commit -m <span style="color: #95e454;">"Fixed severe production problem"</span> &#65288;&#22312;&#38382;&#39064;&#20462;&#22797;&#21518;&#65292;&#36827;&#34892;&#31532;&#20108;&#27425;&#25552;&#20132;&#65289;
 </pre>
 
 </div>
@@ -369,14 +369,16 @@ $ git merge --no-ff hotfix-1.2.1
 $ git branch -d hotfix-1.2.1
 </pre>
 
+
+
 </div>
 </div>
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-07-19T17:00+0800</p>
+<p class="date">Date: 2012-08-03 21:52:57 CST</p>
 <p class="author">Author: HDC</p>
-<p class="creator"><a href="http://orgmode.org">Org</a> version 7.8.11 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
 
 </div>

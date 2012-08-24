@@ -1,4 +1,4 @@
-% Created 2012-07-19 四 14:42
+% Created 2012-07-30 一 15:17
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -37,11 +37,11 @@
 \section{GIT，在技术层面上，绝对是一个无中心的分布式版本控制系统，但在管理层面上，我建议你保持一个中心版本库。}
 \label{sec-1}
 
-\href{http://roclinux.cn/wp-content/uploads/2010/12/centr-decentr.png}{http://roclinux.cn/wp-content/uploads/2010/12/centr-decentr.png}
+\includegraphics[width=.9\linewidth]{images/105017.png}
 \section{我建议，一个中心版本库（我们叫它origin）至少包括两个分支，即“主分支”（master）和“开发分支”（develop）}
 \label{sec-2}
 
-\href{http://roclinux.cn/wp-content/uploads/2010/12/git-master-develop.png}{http://roclinux.cn/wp-content/uploads/2010/12/git-master-develop.png}
+\includegraphics[width=.9\linewidth]{images/105026.png}
 \section{要确保：团队成员从主分支（master）获得的都是处于发布状态的代码，而从开发分支（develop）应该总能够获得最新开发进展的代码}
 \label{sec-3}
 \section{在一个团队开发协作中，我建议，要有“辅助分支”的概念。}
@@ -55,7 +55,7 @@
 \section{至此，我们形成了如下这张最重要的组织组，包含了两个粗体字分支（master/develop）和三个细体字分支（feature/release/hotfixes）。}
 \label{sec-8}
 
-\href{http://roclinux.cn/wp-content/uploads/2010/12/bigpicture-git-branch-all.png}{http://roclinux.cn/wp-content/uploads/2010/12/bigpicture-git-branch-all.png}
+\includegraphics[width=.9\linewidth]{images/105037.png}
 \section{“Feature branches”，起源于develop分支，最终也会归于develop分支。}
 \label{sec-9}
 \section{“Feature branches”常用于开发一个独立的新功能，且其最终的结局必须只有两个，其一是合并入“develop”分支，其二是被抛弃。最典型的“Feature branches”一定是存在于团队开发者那里，而不应该是“中心版本库”中。}
@@ -79,7 +79,7 @@ $ git merge --no-ff myfeature
 $ git branch -d myfeature
 $ git push origin develop
 \end{verbatim}
-\href{http://my.oschina.net/uploads/space/2011/0128/105048_Vl2Q_98095.png}{http://my.oschina.net/uploads/space/2011/0128/105048\_Vl2Q\_98095.png}
+\includegraphics[width=.9\linewidth]{images/105048.png}
 \section{“Release branch”，起源于 develo 分支，最终归于 “develop” 或 “master” 分支。这类分支建议命名为 “release-*”}
 \label{sec-13}
 \section{“Release branch” 通常负责 “短期的发布前准备工作”、“小bug的修复工作”、“版本号等元信息的准备工作”。与此同时，“develop”分支又可以承接一下个新功能的的开发工作了。}
@@ -116,7 +116,7 @@ $ git branch -d release-1.2
 \section{建议设立 “Hotfix branches” 的原因是：希望避免 “develop分支” 新功能的开发必须为BUG修复让路的情况。}
 \label{sec-21}
 
-\href{http://my.oschina.net/uploads/space/2011/0128/105059_qY0H_98095.png}{http://my.oschina.net/uploads/space/2011/0128/105059\_qY0H\_98095.png}
+\includegraphics[width=.9\linewidth]{images/105059.png}
 \section{建立 “Hotfix branches”，方法是：}
 \label{sec-22}
 

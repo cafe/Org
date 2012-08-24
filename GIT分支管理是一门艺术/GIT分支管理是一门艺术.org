@@ -69,3 +69,5 @@ $ git checkout develop
 $ git merge --no-ff hotfix-1.2.1
 $ git branch -d hotfix-1.2.1
 #+END_SRC
+
+

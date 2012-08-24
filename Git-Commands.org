@@ -1,0 +1,59 @@
+#+TITLE: Git Commands
+
+#+BEEGIN_SRC bash
+$ git log --pretty=fuller
+commit 92dee9b8125afc9a606394ed463f9f264f2d3d58
+Author:     Jiang Xin <worldhello.net@gmail.com>
+AuthorDate: Wed Dec 14 14:52:40 2011 +0800
+Commit:     Jiang Xin <worldhello.net@gmail.com>
+CommitDate: Wed Dec 14 14:52:40 2011 +0800
+
+    README for this project. 
+#+END_SRC
+
+- 不想影响本地其他项目的提交，因此下面的设置命令没有使用--global参数，只对当前工程的版本库进行设置。
+#+BEGIN_SRC bash
+$ git config user.name "Foo Bar"
+$ git config user.email "foobar@gmail.com"
+#+END_SRC
+
+- 执行Git修补提交命令
+注意使用参数--reset-author会将提交信息中的属性Author连同AuthorDate一并修改，否则只修改Commit和CommitDate。参数-C HEAD维持提交说明不变。
+#+BEGIN_SRC bash
+$ git commit --amend --reset-author -C HEAD
+#+END_SRC
+- 查看提交日志，发现提交者信息和作者信息都已经更改。
+#+BEGIN_SRC bash
+$ git log --pretty=fuller
+commit e1e52d99fa71fd6f606903efa9da04fd0055fca9
+Author:     Jiang Xin <gotgithub@gmail.com>
+AuthorDate: Wed Dec 14 15:05:47 2011 +0800
+Commit:     Jiang Xin <gotgithub@gmail.com>
+CommitDate: Wed Dec 14 15:05:47 2011 +0800
+
+    README for this project.
+#+END_SRC
+- 直接推送会报错。
+错误信息中出现non-fast-forward（非快进式推送），含义为要推送的提交并非继远程版本库最新提交之后的提交，推送会造成覆盖导致服务器端有数据（提交）会丢失。
+#+BEEGIN_SRC bash
+$ git push
+To git@github.com:gotgithub/helloworld.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:gotgithub/helloworld.git'
+To prevent you from losing history, non-fast-forward updates were rejected
+Merge the remote changes (e.g. 'git pull') before pushing again.  See the
+'Note about fast-forwards' section of 'git push --help' for details.
+#+END_SRC
+- 使用强制推送
+对于一个helloword示例项目来说，显然不需要向上面命令的错误信息所提示的那样先执行git pull合并上游版本库再推送，而是选择强制推送，以新的修补提交覆盖包含错误提交者ID的提交。
+#+BEGIN_SRC
+$ git push -f
+Counting objects: 3, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 629 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:gotgithub/helloworld.git
+ + 92dee9b...e1e52d9 master -> master (forced update)
+#+END_SRC
+

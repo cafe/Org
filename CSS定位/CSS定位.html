@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>CSS定位</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="CSS定位"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-08-01 13:35:29 CST"/>
+<meta name="author" content="HDC"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">CSS定位</h1>
+
+<p>定位一直是WEB标准应用中的难点，如果理不清楚定位那么可能应实现的效果实现不了，实现了的效果可能会走样。如果理清了定位的原理，那定位会让网页实现的更加完美。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 定位的定义</a></li>
+<li><a href="#sec-2">2 position:static</a></li>
+<li><a href="#sec-3">3 position:relative</a></li>
+<li><a href="#sec-4">4 position:absolute</a></li>
+<li><a href="#sec-5">5 可以位移的元素（相对定位）</a></li>
+<li><a href="#sec-6">6 可以在任意一个位置的元素（绝对定位）</a></li>
+<li><a href="#sec-7">7 被关联的绝对定位</a></li>
+<li><a href="#sec-8">8 总在视线里的元素（固定定位）</a></li>
+<li><a href="#sec-9">9 CSS2 盒模型</a></li>
+<li><a href="#sec-10">10 一切皆为框</a></li>
+<li><a href="#sec-11">11 CSS定位机制</a></li>
+<li><a href="#sec-12">12 CSS position 属性</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 定位的定义</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>以CSS中关于定位的内容是：position:relative | absolute | static | fixed
+</p><ul>
+<li>static 没有特别的设定，遵循基本的定位规定，不能通过z-index进行层次分级。
+</li>
+<li>relative 不能脱离文档流，参考自身静态位置通过 top,bottom,left,right 定位，并且可以通过 z-index 进行层次分级。
+</li>
+<li>absolute 脱离文档流，通过 top,bottom,left,right 定位。选取其最近的父级定位元素，当父级 position 为 static 时，absolute元素将以 body 坐标原点进行定位，可以通过 z-index 进行层次分级。
+</li>
+<li>fixed 固定定位，这里它所固定的对象是可视窗口而非是 body 或是父级元素。可通过 z-index 进行层次分级。
+</li>
+</ul>
+
+
+<p>
+CSS中定位的层叠分级：z-index:auto | number
+</p><ul>
+<li>auto 遵从其父对象的定位
+</li>
+<li>number 无单位的整数值，可为负数。
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> position:static</h2>
+<div class="outline-text-2" id="text-2">
+
+<p>元素的 position 属性默认值为 :static，即该元素出现在文档的常规位置，不会重新定位。
+通常此属性值可以不设置，除非是要覆盖之前的定义。
+</p>
+
+
+<pre class="src src-html">#div-1 {
+  position:static;
+}
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> position:relative</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>设置了 position:relative，便可以结合 top、bottom、left、right 的属性来偏移其文档的常规位置。
+例如将 div-1 向下移动 20 像素、向左移动 40 像素：
+</p>
+
+
+<pre class="src src-html">#div-1 {
+  position:relative;
+  top:20px;
+  left:-40px;
+}
+</pre>
+
+<p>
+注意 div-1 未被移动之前的地方，现在多了一点空隙，紧接着 div-1 的元素(div-after)却没有被移动，事实上即使 div-1 被移动了， <b>它仍占据原始位置</b> 。
+貌似 position:relative 用处不大（我倒觉得这点很有用），但在后面的内容中显得尤为重要。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> position:absolute</h2>
+<div class="outline-text-2" id="text-4">
+
+<p>设置了 position:absolute，即绝对定位，便可以将元素放在文档中任何想放的位置。
+例如将 div-1a 放置在右上角：
+</p>
+
+
+<pre class="src src-html">#div-1a {
+  position:absolute;
+  top:0;
+  right:0;
+  width:200px;
+}
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 可以位移的元素（相对定位）</h2>
+<div class="outline-text-2" id="text-5">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 可以在任意一个位置的元素（绝对定位）</h2>
+<div class="outline-text-2" id="text-6">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> 被关联的绝对定位</h2>
+<div class="outline-text-2" id="text-7">
+
+<p>上面说的是单一的绝对定位，而在实际的应用中我们常常会需要用到一种特别的形式。即希望定位元素要有绝对定位的特性，但是又希望绝对定位的坐标原点可以固定在网页中的某一个点，当这个点被移动时绝对定位元素能保证相对于这个原坐标的相对位置。也就是说需要这个绝对定位跟着网页移动，并且是固定在网页的某一个位置。通常当网页是居中形式的时候这种效果就会显得特别的重要。要实现这种效果基本方式就是为这个绝对定位的父级设置为相对定位或是绝对定位。那么绝对定位的坐标就会以父级为坐标起始点。
+虽然是如此，但是这个坐标原点却并不是父级的坐标原点，这是一个很奇怪的坐标位置。我们来看一下模型图示：
+</p>
+<p>
+<img src="3.png"  alt="3.png" />
+</p>
+<p>
+我们看到，这个图中父级为黑灰色区块，子级为青色区块。父级是相对定位，子级是绝对定位。子级设置了顶点位移50个像素，左倾位移50个像素。那么我们看，子级的坐标原点并不是从父级的坐标原点位移50个像素，而是从父级块的padding左上边缘点为坐标起始点（即A点）。而父级这里如果要产生位置移动，或是浏览器窗口大小有所变动都不会影响到这个绝对定位元素与父级的相对定位元素之间的位置关系。这个子级也不用调整数值。
+这是一种很特别并且也是非常实用的应用方式。如果你之前对于定位的控制并不自如的话，相信看完这里对定位的解释一定可以把定位使用得随心所欲。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> 总在视线里的元素（固定定位）</h2>
+<div class="outline-text-2" id="text-8">
+
+
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> CSS2 盒模型</h2>
+<div class="outline-text-2" id="text-9">
+
+<p>盒模型主要定义四个区域：内容（content）、边框距（padding）、边界（border）、边距（margin）。
+对于初学者，经常会搞不清楚margin，background-color，background-image，padding，content，border之间的层次、关系和相互影响。这里提供一张盒模型的3D示意图：
+</p>
+<p>
+<img src="cssbox3d.gif"  alt="cssbox3d.gif" />
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> 一切皆为框</h2>
+<div class="outline-text-2" id="text-10">
+
+<p>div、h1 或 p 元素常常被称为块级元素。这意味着这些元素显示为 <b>一块内容</b> ，即“块框”，与之相反，span 和 strong 等元素称为“行内元素”，这是因为它们的内容显示在行中，即“行内框”。
+您可以使用 <span style="text-decoration:underline;">display属性</span> 改变生成的框的类型。这意味着，通过将 display 属性设置为 block，可以让行内元素（比如 &lt;a&gt; 元素）表现得像块级元素一样。还可以通过把 display 设置为 none，让生成的元素根本没有框。这样的话，该框及其所有内容就不再显示，不占用文档中的空间。
+但是在一种情况下，即使没有进行显式定义，也会创建块级元素。这种情况发生在把一些文本添加到一个块级元素（比如 div）的开关，即使没有把这些文本定义为段落，它也会被当作段落对待：
+</p>
+
+
+<pre class="src src-html">&lt;<span style="color: #cae682;">div</span>&gt;
+some text
+&lt;<span style="color: #cae682;">p</span>&gt;Some more text.&lt;/<span style="color: #cae682;">p</span>&gt;
+&lt;/<span style="color: #cae682;">div</span>&gt;
+</pre>
+
+<p>
+在这种情况下，这个框称为无名块框，因为它不与专门定义的元素相关联。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> CSS定位机制</h2>
+<div class="outline-text-2" id="text-11">
+
+<p>CSS有三种基本的定位机制：普通流、浮动和绝对定位。
+除非专门指定，否则所有框都在普通流中定位。也就是说，普通流中的元素的位置由元素在 (X)HTML 中的位置决定。
+块级框从上到下一个接一个地排列，框之间的垂直距离是由框的垂直外边框计算出来。
+行内框在一行中水平布置。可以使用水平内边框、边框和外边框调整它们的间距。但是，垂直内边距、边距和外边距不影响行内框的高度。由一行形成的水平框称为 <b>选框（Line Box）</b> ，行框的高度总是足以容纳它包含的所有行内框。不过，设置行高可以增加这个框的高度。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> CSS position 属性</h2>
+<div class="outline-text-2" id="text-12">
+
+<p>通过使用 <span style="text-decoration:underline;">position 属性</span> ，我们可以选择 4 种不同类型的定位，这会影响元素框的生成的方式。
+position 属性值的含义：
+</p><ul>
+<li><b>static</b>
+</li>
+</ul>
+
+<p>元素框正常生成，块级元素生成一个矩形框，作为文档流的一部分，行内元素则会创建一个或多个行框，置于其父元素中。
+</p><ul>
+<li><b>relative</b>
+</li>
+</ul>
+
+<p>元素框偏移某个距离。元素仍保持其未定位前的形状，它原本所占用的空间仍保留。
+</p><ul>
+<li><b>absolute</b>
+</li>
+</ul>
+
+<p>元素框从文档流完全删除，并相对于其包含块定位。包含块可能是文档中的另一个元素或者是初始包含块。元素原先在正常文档流中所占的空间会关闭，就好像元素原来不存在一样。元素定位后生成一个块级框，而不论原来它在正常流中生成保种类型的框。
+</p><ul>
+<li><b>fixed</b>
+</li>
+</ul>
+
+<p>元素框的表现类似于将 position 设置为 absolute，不过其包含块是视窗本身。
+</p>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-08-01 13:35:29 CST</p>
+<p class="author">Author: HDC</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>
